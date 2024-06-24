@@ -6,8 +6,8 @@ import SessionWrapper from '@/components/SessionWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Instagram Clone',
-  description: 'A clone of Instagram built with Next.js and Tailwind CSS',
+  title: 'Next TV',
+  description: 'The LIve TV you need',
 };
 
 export default function RootLayout({ children }) {
