@@ -19,8 +19,7 @@ const TestPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
   useEffect(() => {
-    console.log(process.env.adminmail)
-    // if (!session || (session.user.email !== process.env.adminmail)) {
+    // if (!session || (session.user.email !== process.env.adminMail)) {
     //   router.push('/');
     // }
   }, [session, router]);

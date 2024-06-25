@@ -18,14 +18,14 @@ export default function ChannelDetails({ channel }) {
             <a href="#">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{channel.channelCategory}</h5>
             </a>
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-2">
                 {
                     channel.channels.map(eachChannel => {
                         return (
                             // <p onClick={()=>channelDetal(eachChannel)}>{eachChannel.channelName}</p>
                             <div onClick={()=>channelDetal(eachChannel)} class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                 <a href="#">
-                                    <img class="rounded-t-lg" src={eachChannel.channelImage} alt="" />
+                                    <img class="rounded-t-lg w-32 h-32" src={eachChannel.channelImage} alt="" />
                                 </a>
                                 <div class="p-2">
                                     <a>
