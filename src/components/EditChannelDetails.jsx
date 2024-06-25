@@ -5,9 +5,9 @@ import { getFirestore, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { app } from '../firebase';
 
 export default function EditChannelDetails({ selectedCategory, c }) {
-  console.log(c.channelName)  
   const [editedChannelName, setEditedChannelName] = useState(c.channelName);
   const [editedChannelServers, setEditedChannelServers] = useState(c.channelServers);
+  const [editedChannelImage, setEditedChannelImage] = useState(c.channelImage);
   const [isEditing, setIsEditing] = useState(false);
 
   const db = getFirestore(app);
@@ -18,6 +18,7 @@ export default function EditChannelDetails({ selectedCategory, c }) {
     await updateDoc(channelDocRef, {
       channelName: editedChannelName,
       channelServers: editedChannelServers,
+      channelImage:editedChannelImage
     });
 
     alert('Channel updated successfully');
@@ -58,6 +59,18 @@ export default function EditChannelDetails({ selectedCategory, c }) {
           editedChannelServers
         )}
       </td>
+      <td className="px-6 py-4">
+        {isEditing ? (
+          <input 
+            type="text" 
+            value={editedChannelImage} 
+            onChange={(e) => setEditedChannelImage(e.target.value)} 
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+        ) : (
+          editedChannelImage
+        )}
+      </td>      
       <td className="px-6 py-4">
         {isEditing ? (
           <button 

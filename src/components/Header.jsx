@@ -33,62 +33,6 @@ export default function Header() {
   const filePickerRef = useRef(null);
   const db = getFirestore(app);
 
-  function addImageToPost(e) {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setImageFileUrl(URL.createObjectURL(file));
-    }
-  }
-
-  useEffect(() => {
-    if (selectedFile) {
-      uploadImageToStorage();
-    }
-  }, [selectedFile]);
-
-  async function uploadImageToStorage() {
-    setImageFileUploading(true);
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + '-' + selectedFile.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-      },
-      (error) => {
-        console.error(error);
-        setImageFileUploading(false);
-        setImageFileUrl(null);
-        setSelectedFile(null);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageFileUrl(downloadURL);
-          setImageFileUploading(false);
-        });
-      }
-    );
-  }
-
-  async function handleSubmit() {
-    setPostUploading(true);
-    const docRef = await addDoc(collection(db, 'posts'), {
-      username: session.user.username,
-      caption,
-      profileImg: session.user.image,
-      image: imageFileUrl,
-      timestamp: serverTimestamp(),
-    });
-    setPostUploading(false);
-    setIsOpen(false);
-    location.reload();
-  }
-
   return (
     // <div className='shadow-sm border-b sticky top-0 bg-white z-30 p-3'>
     <div className='sticky top-0 bg-white z-30 p-3'>
@@ -103,15 +47,25 @@ export default function Header() {
         <input type='text' placeholder='Search' className='bg-gray-50 border border-gray-200 rounded text-sm w-full py-2 px-4 max-w-[210px]' />
 
         {/* menu items */}
-        <Link href='/' className='inline-flex'>
-            <h1>Home</h1>
+        <Link href='/test' className='inline-flex'>
+            <h1>Admin Panel</h1>
         </Link>
-        <Link href='/' className='inline-flex'>
-            <h1>About</h1>
-        </Link>           
-        <Link href='/' className='inline-flex'>
-            <h1>Projects</h1>
-        </Link> 
+        {session ? (
+          <div className='flex gap-2 items-center'>
+            <img
+              src={session.user.image}
+              alt={session.user.name}
+              className='h-10 w-10 rounded-full cursor-pointer'
+              onClick={signOut}
+            />
+          </div>
+        ) : (
+          <button
+            onClick={signIn} className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+          >
+            Login
+          </button>
+        )}        
       </div>
     </div>
   );
